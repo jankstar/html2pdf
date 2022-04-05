@@ -1,0 +1,11 @@
+/.env
+/node_modules
+/package-lock.json
+/data
+/.DS_Store
+launch.json
+.vscode
+.deplyment
+/temp
+.deplyment
+

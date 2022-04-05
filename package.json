@@ -1,0 +1,21 @@
+{
+  "name": "html2pdf",
+  "version": "0.0.1",
+  "description": "Convert HTML files as Template (or without) to a PDF",
+  "main": "html2pdf.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "keywords": [
+    "html",
+    "pdf",
+    "template"
+  ],
+  "author": "jankstar",
+  "license": "MIT",
+  "dependencies": {
+    "ejs": "^3.1.6",
+    "puppeteer": "^13.5.2",
+    "uuid": "^8.3.2"
+  }
+}

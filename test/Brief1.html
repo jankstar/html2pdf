@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+
+    <title>Brief</title>
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500,700,900|Material+Icons" rel="stylesheet" type="text/css">
+    <!--script src="https://unpkg.com/pagedjs/dist/paged.polyfill.js" defer></script-->
+    <script src="https://cdn.jsdelivr.net/npm/pagedjs@0.2.0/dist/paged.polyfill.js" defer></script>
+
+    <style>
+        @page {
+            size: A4;
+            margin-left: 25mm;
+            margin-right: 10mm;
+            margin-top: 17mm;
+            margin-bottom: 17mm;
+
+            @bottom-right {
+                content: 'Seite ' counter(page) ' von ' counter(pages);
+            }
+
+            @bottom-left {
+                content: '©jankstar - 2022/03/16';
+                font-size: 6px;
+            }
+        }
+
+        body {
+            font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+        }
+
+        table {
+            margin-top: 5mm;
+            border-collapse: collapse;
+            border-spacing: 0;
+            table-layout: fixed;
+            width: 100%;
+        }
+
+        td {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: inherit;
+            vertical-align: top;
+            word-break: break-word;
+            word-wrap: break-word;
+        }
+
+        th {
+            border: 1px solid black;
+            padding: 10px;
+            text-align: inherit;
+            vertical-align: top;
+            word-break: break-word;
+            word-wrap: break-word;
+            text-align: left;
+        }
+
+        h7 {
+            font-size: 8px;
+        }
+
+        /* Interface styling */
+
+        .datum {
+            text-align: right;
+        }
+
+        .briefkopf {
+            font-size: 21px;
+            font-weight: bold;
+        }
+
+        .anschrift {
+            margin-top: 12px;
+        }
+
+        .betreff {
+            margin-top: 8.4mm;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        .kopf {
+            margin:0%; padding:0%; border: unset
+        }
+    </style>
+</head>
+
+<body>
+    <section>
+        <table class="kopf" style="width: 100%; ">
+        <tbody>
+        <tr class="kopf">
+            <td class="kopf">        
+                <div class="briefkopf">
+                <%= name.vorname %><br />
+                <%= name.nachname %><br />
+                <br />
+                <br />
+                </div>
+            </td>
+        <td class="kopf"></td>
+        
+        </tr>
+        <tr class="kopf">
+            <td class="kopf" style="width: 85mm;">
+                <div class="anschrift">
+                <h7><%= name.strasse %> <%= name.hnr %> | <%= name.telnr %> | <%= name.email %></h7> <br />
+                <%= to.titel %><br />
+                <%= to.name1 %> <%= to.name2 %><br />
+                <%= to.strasse %> <%= to.hnr %><br />
+                <%= to.plz %> <%=to.ort %><br />
+                <br />
+                <br />
+                <br />
+                </div>
+            </td>
+            <td class="kopf" style="width: 85mm;">
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <div class="datum">Datum: <%= new Date().toLocaleDateString('de-DE', { year: 'numeric', month: 'long', day: 'numeric' }) %><br /></div> 
+            </td>
+        </tr>
+        </tbody>
+        </table>
+
+        <div class="betreff">Ihr Auftrag vom <%= auftrag.datum.toLocaleDateString('de-DE') %><br /></div><br />
+        
+        <%= to.anrede %>,<br />
+        <p>wenn Sie sofort anfangen möchten, tippen Sie auf einen 
+            Platzhaltertext (wie diesen), und beginnen Sie mit der
+            Eingabe.</p>
+    </section>
+
+    <table>
+        <tbody>
+            <tr>
+                <th style="width: 20mm;">Nr.</th>
+                <th>Bezeichnung</th>
+                <th style="text-align: right;">netto Preis</th>
+            </tr>
+            <% leistung.forEach(function(leistung) { %>
+                <tr>
+                    <td><%= leistung.nr %></td>
+                    <td><%= leistung.bezeichnung %></td>
+                    <td style="text-align: right;"><%= leistung.preis.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' }) %> </td>
+                </tr>
+                <% }); %>
+        </tbody>
+    </table>
+    <section>
+        <p>Fragen Sie sich vielleicht, was Sie in das Anschreiben aufnehmen sollen? Gut geeignet sind wichtige Punkte
+            dazu,
+            welche Vorteile Sie dem Unternehmen bieten können und warum Sie für diese bestimmte Stelle besonders
+            geeignet
+            sind. Denken Sie auch daran, um ein Vorstellungsgespräch zu bitten. Halten Sie den Text aber insgesamt kurz.
+            Ein
+            Anschreiben sollte kein Roman sein, auch wenn Sie Seiten füllen könnten.</p>
+        Mit freundlichen Grüßen, <br />
+        <h3><%= name.vorname %> <%= name.nachname %></h3>
+    </section>
+</body>
+
+</html>

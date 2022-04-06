@@ -75,7 +75,7 @@ const html2pdf = (() => {
     * @param {String} iData  HTML-Daten file
     * @returns {String} Return value as HTML data file
     */
-    function _replaceVarInHTML( iVar, iData, iProtocol) {
+    function _replaceVarInHTML(iVar, iData, iProtocol) {
         let rData = '';
         try {
             iVar = iVar || {};
@@ -153,6 +153,8 @@ const html2pdf = (() => {
             this.inputpath = value.inputpath || ""
             this.langu = value.langu || "de-DE"
             this.num_pages = value.num_pages || 0
+            this.format = value.format || 'A4'
+            this.landscape = value.landscape || false
             this.body = value.body || ""
             this.base64 = value.base64 || ""
             //
@@ -180,6 +182,8 @@ const html2pdf = (() => {
             this.inputpath = value.inputpath || this.inputpath
             this.langu = value.langu || this.langu
             this.num_pages = value.num_pages || this.num_pages
+            this.format = value.format || this.format
+            this.landscape = value.landscape || this.landscape           
             this.body = value.body || this.body
             this.base64 = value.base64 || this.base64
             this.is_file = false || (this.filename != '');
@@ -321,11 +325,11 @@ const html2pdf = (() => {
 
 
         /**
-         * Supplies the data for a template by name (template) as string
+         * Supplies the data for a template by name (template) as Document or error
          * @param {String} iName Template name
-         * @returns {*}  { name: String, filename: String, data: String, error: Error }
+         * @returns {*} object { doc: Document, error: err}  
          */
-        async getTemplateData(iName) {
+        async getTemplate(iName) {
             let lDoc = undefined;
             try {
                 lDoc = html2pdf.findDocBySubject(iName, 'HTML', iName)
@@ -334,9 +338,9 @@ const html2pdf = (() => {
                     if (!lDoc.filename) { throw Error(`Template ${iName} cannot be loaded.`) }
                     lDoc.body = await fs.readFile(lDoc.filename, 'utf-8');
                 }
-                return { name: lDoc.subject, filename: lDoc.filename, data: lDoc.body, error: undefined };
+                return { doc: lDoc, error: undefined };
             } catch (err) {
-                return { name: iName, filename: '', data: '', error: err }
+                return { doc: undefined, error: err }
             }
         },
 
@@ -382,15 +386,19 @@ const html2pdf = (() => {
             let lDoc = new Document({ subject: `Correspondence of template ${iTemplate}`, template: iTemplate, task: 'Create_Correspondence' });
             lDoc.protocol.push(`Start 'createDocAsCorrespondence' with template ${iTemplate}`)
             try {
-                let { data: data, error: err } = await this.getTemplateData(iTemplate);
-                if (err) {
+                let { doc: lTemplate, error: err } = await this.getTemplate(iTemplate);
+                if (err || !lTemplate || !lTemplate.body) {
+                    err = err || {}
+                    err.message = err.message || 'No template data found'
                     console.log(err)
                     lDoc.protocol.push(`Error: ${err.message}`)
                     return lDoc;
                 }
 
                 //Replace fields
-                lDoc.body = _replaceVarInHTML(iVar, data, lDoc.protocol);
+                lDoc.body = _replaceVarInHTML(iVar, lTemplate.body, lDoc.protocol);
+                lDoc.format = lTemplate.format || 'A4'
+                lDoc.landscape = lTemplate.landscape || false
                 lDoc.protocol.push(`Correspondence created.`)
                 lDoc.type = 'HTML';
                 return lDoc;
@@ -408,11 +416,14 @@ const html2pdf = (() => {
          * @async
          * @param {String} iData as HTML
          * @param {String} iFromat i.e A4
+         * @param {Boolean} iLandscape true / false
          * @returns {Object} { data , html_filename , pdf_filename ,error } data is PDF as string in raw data (binary)
+         * 
          */
-        async convertHTMLToPDFByData(iData, iFormat, iNotDel) {
+        async convertHTMLToPDFByData(iData, iFormat, iLandscape, iNotDel) {
             try {
                 let lFormat = iFormat || 'A4'
+                let lLandscape = iLandscape || false
                 let lFileName = uuidv4();
                 await fs.writeFile(`${DIRECTORY}${lFileName}.html`, iData, 'utf8');
                 //todo html -> pdf generieren
@@ -424,10 +435,10 @@ const html2pdf = (() => {
                     //for (ele in req.cookies) {
                     //    await page.setCookie({ name: ele, value: req.cookies[ele], url:lUrl+'/' })
                     //}
-        
+
                     await page.goto(lUrl, { waitUntil: 'networkidle2' });
-                    await page.pdf({ path: `${DIRECTORY}${lFileName}.pdf`, format: lFormat });
-        
+                    await page.pdf({ path: `${DIRECTORY}${lFileName}.pdf`, format: lFormat, landscape: lLandscape });
+
                     await browser.close();
                 })();
 
@@ -448,18 +459,21 @@ const html2pdf = (() => {
         * Generates a PDF file from an HTML file
         * @async
         * @param {Document} iDoc RDF document
-        * @param {String} iFormat i.e. A4
         * @param {Boolean} iNotDel if 'true', the temporary files for the HTML and PDF document are not deleted but returned
         * @returns {Document} a new document as PDF
         */
-        async convertHTMLToPDF(iDoc, iFormat, iNotDel) {
+        async convertHTMLToPDF(iDoc, iNotDel) {
             let lNewDoc = new Document({ subject: iDoc.subject, template: iDoc.template, task: 'HTML_to_PDF' });
             lNewDoc.protocol = lNewDoc.protocol.concat(iDoc.protocol)
             lNewDoc.protocol.push(`Start 'convertHTMLToPDF' with subject '${iDoc.subject}'`)
             try {
                 if (!iDoc.body) { throw Error(`Document has an HTML body.`) }
                 if (iDoc.type != 'HTML') { throw Error(`Document is not of type HTML`) }
-                let { data: lData, html_filename: lHTMLFilename, pdf_filename: lPDFFilename, error: err } = await html2pdf.convertHTMLToPDFByData(iDoc.body, iFormat, iNotDel)
+                let { data: lData,
+                    html_filename: lHTMLFilename,
+                    pdf_filename:
+                    lPDFFilename,
+                    error: err } = await html2pdf.convertHTMLToPDFByData(iDoc.body, iDoc.format, iDoc.landscape, iNotDel)
                 if (err) { throw err }
                 iDoc.filename = lHTMLFilename
 
@@ -486,6 +500,8 @@ const html2pdf = (() => {
 
             //Regsitrate new HTML template 
             let lDoc1 = html2pdf.newTemplateByFile('test', `${__dirname}/test/Brief1.html`);
+            lDoc1.format = 'A4'
+            lDoc1.landscape = false
             if (lDoc1 && lDoc1.filename) {
                 console.log(`\nHTML Template file ${lDoc1.filename} found.`)
             } else {
@@ -533,12 +549,12 @@ const html2pdf = (() => {
                 lDoc2.protocol.forEach((text) => {
                     console.log('** ' + text)
                 })
-                let lDoc3 = await html2pdf.convertHTMLToPDF(lDoc2, 'A4', true)
+                let lDoc3 = await html2pdf.convertHTMLToPDF(lDoc2, true)
                 if (lDoc3 && lDoc3.filename) {
                     console.log(`\nPDF document ${lDoc3.filename} created.\n`)
 
-                    lDoc2.checkIn() //<-- delete temp file 
-                    lDoc3.checkIn() //<-- delete temp file
+                    //lDoc2.checkIn() //<-- delete temp file 
+                    //lDoc3.checkIn() //<-- delete temp file
                 } else {
                     if (lDoc3) {
                         console.log(lDoc3.protocol)

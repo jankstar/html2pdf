@@ -204,7 +204,7 @@ generates a file name from uuid in temp directory if necessary
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="html2pdf.js.html">html2pdf.js</a>, <a href="html2pdf.js.html#line275">line 275</a>
+        <a href="html2pdf.js.html">html2pdf.js</a>, <a href="html2pdf.js.html#line279">line 279</a>
     </li></ul></dd>
     
 
@@ -266,7 +266,7 @@ generates a file name from uuid in temp directory if necessary
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="html2pdf.js.html">html2pdf.js</a>, <a href="html2pdf.js.html#line283">line 283</a>
+        <a href="html2pdf.js.html">html2pdf.js</a>, <a href="html2pdf.js.html#line287">line 287</a>
     </li></ul></dd>
     
 
@@ -294,7 +294,7 @@ generates a file name from uuid in temp directory if necessary
     
 
     
-    <h4 class="name" id="~convertHTMLToPDF"><span class="type-signature">(async, inner) </span>convertHTMLToPDF<span class="signature">(iDoc, iFormat, iNotDel)</span><span class="type-signature"> &rarr; {Document}</span></h4>
+    <h4 class="name" id="~convertHTMLToPDF"><span class="type-signature">(async, inner) </span>convertHTMLToPDF<span class="signature">(iDoc, iNotDel)</span><span class="type-signature"> &rarr; {Document}</span></h4>
     
 
     
@@ -361,29 +361,6 @@ generates a file name from uuid in temp directory if necessary
 
         <tr>
             
-                <td class="name"><code>iFormat</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">String</span>
-
-
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last">i.e. A4</td>
-        </tr>
-
-    
-
-        <tr>
-            
                 <td class="name"><code>iNotDel</code></td>
             
 
@@ -441,7 +418,7 @@ generates a file name from uuid in temp directory if necessary
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="html2pdf.js.html">html2pdf.js</a>, <a href="html2pdf.js.html#line455">line 455</a>
+        <a href="html2pdf.js.html">html2pdf.js</a>, <a href="html2pdf.js.html#line465">line 465</a>
     </li></ul></dd>
     
 
@@ -499,7 +476,7 @@ generates a file name from uuid in temp directory if necessary
     
 
     
-    <h4 class="name" id="~convertHTMLToPDFByData"><span class="type-signature">(async, inner) </span>convertHTMLToPDFByData<span class="signature">(iData, iFromat)</span><span class="type-signature"> &rarr; {Object}</span></h4>
+    <h4 class="name" id="~convertHTMLToPDFByData"><span class="type-signature">(async, inner) </span>convertHTMLToPDFByData<span class="signature">(iData, iFromat, iLandscape)</span><span class="type-signature"> &rarr; {Object}</span></h4>
     
 
     
@@ -586,6 +563,29 @@ generates a file name from uuid in temp directory if necessary
         </tr>
 
     
+
+        <tr>
+            
+                <td class="name"><code>iLandscape</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">true / false</td>
+        </tr>
+
+    
     </tbody>
 </table>
 
@@ -623,7 +623,7 @@ generates a file name from uuid in temp directory if necessary
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="html2pdf.js.html">html2pdf.js</a>, <a href="html2pdf.js.html#line413">line 413</a>
+        <a href="html2pdf.js.html">html2pdf.js</a>, <a href="html2pdf.js.html#line423">line 423</a>
     </li></ul></dd>
     
 
@@ -805,7 +805,7 @@ generates a file name from uuid in temp directory if necessary
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="html2pdf.js.html">html2pdf.js</a>, <a href="html2pdf.js.html#line381">line 381</a>
+        <a href="html2pdf.js.html">html2pdf.js</a>, <a href="html2pdf.js.html#line385">line 385</a>
     </li></ul></dd>
     
 
@@ -1010,7 +1010,7 @@ generates a file name from uuid in temp directory if necessary
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="html2pdf.js.html">html2pdf.js</a>, <a href="html2pdf.js.html#line292">line 292</a>
+        <a href="html2pdf.js.html">html2pdf.js</a>, <a href="html2pdf.js.html#line296">line 296</a>
     </li></ul></dd>
     
 
@@ -1064,7 +1064,7 @@ generates a file name from uuid in temp directory if necessary
     
 
     
-    <h4 class="name" id="~getTemplateData"><span class="type-signature">(inner) </span>getTemplateData<span class="signature">(iName)</span><span class="type-signature"> &rarr; {*}</span></h4>
+    <h4 class="name" id="~getTemplate"><span class="type-signature">(inner) </span>getTemplate<span class="signature">(iName)</span><span class="type-signature"> &rarr; {*}</span></h4>
     
 
     
@@ -1072,7 +1072,7 @@ generates a file name from uuid in temp directory if necessary
 
 
 <div class="description">
-    Supplies the data for a template by name (template) as string
+    Supplies the data for a template by name (template) as Document or error
 </div>
 
 
@@ -1165,7 +1165,7 @@ generates a file name from uuid in temp directory if necessary
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="html2pdf.js.html">html2pdf.js</a>, <a href="html2pdf.js.html#line328">line 328</a>
+        <a href="html2pdf.js.html">html2pdf.js</a>, <a href="html2pdf.js.html#line332">line 332</a>
     </li></ul></dd>
     
 
@@ -1194,7 +1194,7 @@ generates a file name from uuid in temp directory if necessary
 
         
 <div class="param-desc">
-    { name: String, filename: String, data: String, error: Error }
+    object { doc: Document, error: err}
 </div>
 
 
@@ -1347,7 +1347,7 @@ generates a file name from uuid in temp directory if necessary
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="html2pdf.js.html">html2pdf.js</a>, <a href="html2pdf.js.html#line350">line 350</a>
+        <a href="html2pdf.js.html">html2pdf.js</a>, <a href="html2pdf.js.html#line354">line 354</a>
     </li></ul></dd>
     
 
@@ -1506,7 +1506,7 @@ generates a file name from uuid in temp directory if necessary
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="html2pdf.js.html">html2pdf.js</a>, <a href="html2pdf.js.html#line259">line 259</a>
+        <a href="html2pdf.js.html">html2pdf.js</a>, <a href="html2pdf.js.html#line263">line 263</a>
     </li></ul></dd>
     
 
@@ -1596,7 +1596,7 @@ and a text body from a test PDF file.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="html2pdf.js.html">html2pdf.js</a>, <a href="html2pdf.js.html#line485">line 485</a>
+        <a href="html2pdf.js.html">html2pdf.js</a>, <a href="html2pdf.js.html#line499">line 499</a>
     </li></ul></dd>
     
 
@@ -1648,7 +1648,7 @@ and a text body from a test PDF file.
 <br class="clear">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Tue Apr 05 2022 20:44:18 GMT+0200 (Mitteleuropäische Sommerzeit)
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.10</a> on Wed Apr 06 2022 19:34:00 GMT+0200 (Mitteleuropäische Sommerzeit)
 </footer>
 
 <script> prettyPrint(); </script>

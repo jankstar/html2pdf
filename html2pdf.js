@@ -553,8 +553,8 @@ const html2pdf = (() => {
                 if (lDoc3 && lDoc3.filename) {
                     console.log(`\nPDF document ${lDoc3.filename} created.\n`)
 
-                    //lDoc2.checkIn() //<-- delete temp file 
-                    //lDoc3.checkIn() //<-- delete temp file
+                    lDoc2.checkIn() //<-- delete temp file 
+                    lDoc3.checkIn() //<-- delete temp file
                 } else {
                     if (lDoc3) {
                         console.log(lDoc3.protocol)
